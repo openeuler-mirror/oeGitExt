@@ -1,0 +1,27 @@
+version: 0.0.1
+api_url: https://gitee.com/api/v5
+gitee_url: https://gitee.com
+headers:
+  Content-Type: application/json
+  charset: UTF-8
+requests:
+  retry_times: 3
+  per_page: 100
+  timeout: 300
+api:
+  user_issues: /user/issues
+  user_repos: /user/repos
+  repos_pulls: /repos/{}/pulls
+  orgs_repos: /orgs/{}/repos
+  user: /user
+  user_repo_pulls: /repos/{}/{}/pulls
+  user_repo_pulls_number: /repos/{}/{}/pulls/{}
+  user_repo_pulls_review: /repos/{}/{}/pulls/{}/review
+  user_repo_pulls_assignees: /repos/{}/{}/pulls/{}/assignees
+  user_repo_pulls_test: /repos/{}/{}/pulls/{}/test
+  user_repo_pulls_testers: /repos/{}/{}/pulls/{}/testers
+  user_repo_pulls_merge: /repos/{}/{}/pulls/{}/merge
+  user_issues_number: /repos/{}/issues/{}
+  repos_user_issues: /repos/{}/issues
+  user_repo_forks: /repos/{}/{}/forks
+  user_repo_issues_number: /repos/{}/{}/issues/{}
