@@ -40,6 +40,7 @@ class ReadConfYaml:
         return result
 
     def write_yaml(self):
+        os.makedirs(os.path.dirname(self.config_path), exist_ok=True)
         with open(self.config_path, encoding='utf-8', mode='w') as f:
             yaml.dump(self.conf, stream=f, allow_unicode=True, sort_keys=False)
 
