@@ -11,7 +11,8 @@
 
 from src.command_line.parsers.base_parser import BaseParser
 from src.config.config import Config
-from src.constants.config import OPENEULER, SRC_OPENEULER, Sort, IssuesCommand, PullsCommand
+from src.constants.config import OPENEULER, SRC_OPENEULER, Sort
+from src.constants.config import IssuesCommand, PullsCommand, PRCategory, PRState, IssueState
 from src.show.issues import Issues
 from src.show.project import Project
 from src.show.pull_requests import PullRequests
@@ -51,12 +52,12 @@ class ClientParser(BaseParser):
     @staticmethod
     def _run_show_issues(args):
         Issues(create=args.create, pretty=args.pretty, columns=args.columns, json=args.json, sort=args.sort,
-                direction=args.direction).run()
+                direction=args.direction, oe=args.oe, state=args.state).run()
 
     @staticmethod
     def _run_show_pull_request(args):
-        PullRequests(repo_name=args.repo_name, only_mine=args.only, pretty=args.pretty, columns=args.columns,
-                    json=args.json).run()
+        PullRequests(repo_name=args.repo_name, category=args.category, pretty=args.pretty, columns=args.columns,
+                    json=args.json, oe=args.oe, state=args.state).run()
 
     @staticmethod
     def _run_show_repos(args):
@@ -152,6 +153,12 @@ class ClientParser(BaseParser):
             help='show issues'
         )
         issues_parser.add_argument(
+            '-oe',
+            action='store_true',
+            default=False,
+            help='only show issues in openEuler enterprise'
+        )
+        issues_parser.add_argument(
             '-create',
             action='store_true',
             default=False,
@@ -191,6 +198,12 @@ class ClientParser(BaseParser):
             default='',
             help='only show specific columns'
         )
+        issues_parser.add_argument(
+            '-state',
+            default=IssueState.OPEN,
+            choices=[IssueState.ALL, IssueState.OPEN, IssueState.CLOSED, IssueState.PROGRESSING, IssueState.REJECTED],
+            help='isue state'
+        )
         issues_parser.set_defaults(func=self._run_show_issues)
 
     def _add_show_pull_request_parser(self):
@@ -199,16 +212,27 @@ class ClientParser(BaseParser):
             help='show pull request'
         )
         pull_request_parser.add_argument(
+            '-oe',
+            action='store_true',
+            default=False,
+            help='only show pr in openEuler enterprise'
+        )
+        pull_request_parser.add_argument(
             '-name',
             dest="repo_name",
-            required=True,
             help='repo name'
         )
         pull_request_parser.add_argument(
-            '-only',
-            action='store_true',
-            default=False,
-            help='only show my own'
+            '-category',
+            default=PRCategory.ALL,
+            choices=[PRCategory.ALL, PRCategory.AUTHOR, PRCategory.ASSIGNEE, PRCategory.TESTER],
+            help='PR owner catetory'
+        )
+        pull_request_parser.add_argument(
+            '-state',
+            default=PRState.OPEN,
+            choices=[PRState.ALL, PRState.OPEN, PRState.CLOSED, PRState.MERGED],
+            help='PR state'
         )
         pull_request_parser.add_argument(
             '-p', '--pretty',
@@ -370,7 +394,7 @@ class ClientParser(BaseParser):
         )
         pulls_parser.add_argument(
             '-head',
-            help='PR source branch name'
+            help='PR source branch, format: branch (master)or path_with_namespace:branch (oschina/gitee:master)'
         )
         pulls_parser.add_argument(
             '-base',
@@ -386,7 +410,7 @@ class ClientParser(BaseParser):
         )
         pulls_parser.add_argument(
             '-state',
-            help='state'
+            help='state, reset or pass'
         )
         pulls_parser.add_argument(
             '-show',

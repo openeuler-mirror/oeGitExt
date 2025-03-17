@@ -25,6 +25,28 @@ MAGENTA = '\033[0;35m'
 GRAY = '\033[0;90m'
 
 
+class IssueState:
+    ALL = 'all'
+    OPEN = 'open'
+    PROGRESSING = 'progressing'
+    CLOSED = 'closed'
+    REJECTED = 'rejected'
+
+
+class PRState:
+    ALL = 'all'
+    OPEN = 'open'
+    CLOSED = 'closed'
+    MERGED = 'merged'
+
+
+class PRCategory:
+    ALL = 'all'
+    AUTHOR = 'author'
+    ASSIGNEE = 'assignee'
+    TESTER = 'tester'
+
+
 class Sort:
     FULL_NAME = 'full_name'
     CREATED = 'created'

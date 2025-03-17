@@ -9,7 +9,7 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 
-from src.constants.config import RED, GREEN, YELLOW, BLUE, GRAY
+from src.constants.config import RED, GREEN, YELLOW, BLUE, GRAY, OPENEULER, SRC_OPENEULER
 from src.show.base_show import BaseShow
 from src.utils.read_conf_yaml import conf
 
@@ -20,10 +20,22 @@ class Issues(BaseShow):
         self.create = kwargs.get('create')
         self.sort = kwargs.get('sort')
         self.direction = kwargs.get('direction')
+        self.oe = kwargs.get('oe')
+        self.state = kwargs.get('state')
 
     def run(self):
         data = self._get_issues()
         self._show_issues(data)
+
+    def _filter_oe_enterprise_issue(self, data):
+        if not self.oe:
+            return data
+        result = []
+        for item in data:
+            issue_namespace = item.get('repository', {}).get('namespace', {}).get('path', '')
+            if issue_namespace in [OPENEULER, SRC_OPENEULER]:
+                result.append(item)
+        return result
 
     def _get_issues(self):
         data = []
@@ -35,12 +47,12 @@ class Issues(BaseShow):
         while True:
             page = self._requests_data(self.api_url + conf.get('api', 'user_issues') + \
                     f'?access_token={self._decode_auth()}&page={current_page}&per_page={self.per_page}&filter={filter}'
-                    f'&state=all&sort={self.sort}&direction={self.direction}')
+                    f'&state={self.state}&sort={self.sort}&direction={self.direction}')
             data += page
             if len(page) < self.per_page:
                 break
             current_page += 1
-        return data
+        return self._filter_oe_enterprise_issue(data)
 
     def _show_issues(self, data):
         if self.json:
