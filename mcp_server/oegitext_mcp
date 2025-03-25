@@ -16,17 +16,9 @@ def get_my_openeuler_issue() -> dict:
         
         return result
     except subprocess.CalledProcessError as e:
-        return {
-            "status": "error",
-            "error_code": "COMMAND_EXEC_ERROR",
-            "message": f"命令执行失败: {e.output.strip()}"
-        }
+        return e
     except Exception as e:
-        return {
-            "status": "error",
-            "error_code": "UNKNOWN_ERROR",
-            "message": str(e)
-        }
+        return e
 
 @mcp.tool()
 def get_my_openeuler_project() -> dict:
@@ -39,17 +31,9 @@ def get_my_openeuler_project() -> dict:
         
         return result
     except subprocess.CalledProcessError as e:
-        return {
-            "status": "error",
-            "error_code": "COMMAND_EXEC_ERROR",
-            "message": f"命令执行失败: {e.output.strip()}"
-        }
+        return e
     except Exception as e:
-        return {
-            "status": "error",
-            "error_code": "UNKNOWN_ERROR",
-            "message": str(e)
-        }
+        return e
 
 @mcp.tool()
 def get_my_openeuler_pr(repo_type:str = Field(description="仓库属性，有两种：制品仓：src-openeuler，源码仓：openeuler"), 
@@ -66,17 +50,9 @@ def get_my_openeuler_pr(repo_type:str = Field(description="仓库属性，有两
         
         return result
     except subprocess.CalledProcessError as e:
-        return {
-            "status": "error",
-            "error_code": "COMMAND_EXEC_ERROR",
-            "message": f"命令执行失败: {e.output.strip()}"
-        }
+        return e
     except Exception as e:
-        return {
-            "status": "error",
-            "error_code": "UNKNOWN_ERROR",
-            "message": str(e)
-        }
+        return e
 
 if __name__ == "__main__":
     # Initialize and run the server
