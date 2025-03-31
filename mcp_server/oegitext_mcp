@@ -1,0 +1,59 @@
+import subprocess
+import json
+from pydantic import Field
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("查找openEuler社区的issue,repos,pr,以及我的project")
+
+@mcp.tool()
+def get_my_openeuler_issue() -> dict:
+    """统计我在openEuler社区所负责的issue"""
+    try:
+        # 执行oegitext命令并解析JSON结果
+        result = subprocess.check_output(['oegitext', 'show', 'issue', '-p'], 
+                                        text=True, 
+                                        stderr=subprocess.STDOUT)
+        
+        return result
+    except subprocess.CalledProcessError as e:
+        return e
+    except Exception as e:
+        return e
+
+@mcp.tool()
+def get_my_openeuler_project() -> dict:
+    """查找我在openEuler社区的项目"""
+    try:
+        # 执行oegitext命令并解析JSON结果
+        result = subprocess.check_output(['oegitext', 'show', 'proj', '-p'], 
+                                        text=True, 
+                                        stderr=subprocess.STDOUT)
+        
+        return result
+    except subprocess.CalledProcessError as e:
+        return e
+    except Exception as e:
+        return e
+
+@mcp.tool()
+def get_my_openeuler_pr(repo_type:str = Field(description="仓库属性，有两种：制品仓：src-openeuler，源码仓：openeuler"), 
+                        repo_name:str = Field(description="仓库名")) -> dict:
+    """
+    查找我在openEuler对应仓库下的pr，如果用户没有指定repo_type，可以执行这个函数两次，都查询一遍
+    """
+    try:
+        # 执行oegitext命令并解析JSON结果
+        name = f"{repo_type}/{repo_name}"
+        result = subprocess.check_output(['oegitext', 'show', 'pr' , '-name', name, '-p'], 
+                                        text=True, 
+                                        stderr=subprocess.STDOUT)
+        
+        return result
+    except subprocess.CalledProcessError as e:
+        return e
+    except Exception as e:
+        return e
+
+if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run()
