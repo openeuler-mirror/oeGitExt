@@ -25,6 +25,12 @@ MAGENTA = '\033[0;35m'
 GRAY = '\033[0;90m'
 
 
+class IssueFilter:
+    ALL = 'all'
+    ASSIGNED = 'assigned'
+    CREATED = 'created'
+
+
 class IssueState:
     ALL = 'all'
     OPEN = 'open'
