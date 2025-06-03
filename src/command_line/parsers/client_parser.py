@@ -12,7 +12,7 @@
 from src.command_line.parsers.base_parser import BaseParser
 from src.config.config import Config
 from src.constants.config import OPENEULER, SRC_OPENEULER, Sort
-from src.constants.config import IssuesCommand, PullsCommand, PRCategory, PRState, IssueState
+from src.constants.config import IssuesCommand, PullsCommand, PRCategory, PRState, IssueState, IssueFilter
 from src.show.issues import Issues
 from src.show.project import Project
 from src.show.pull_requests import PullRequests
@@ -51,7 +51,7 @@ class ClientParser(BaseParser):
 
     @staticmethod
     def _run_show_issues(args):
-        Issues(create=args.create, pretty=args.pretty, columns=args.columns, json=args.json, sort=args.sort,
+        Issues(filter=args.filter, pretty=args.pretty, columns=args.columns, json=args.json, sort=args.sort,
                 direction=args.direction, oe=args.oe, state=args.state).run()
 
     @staticmethod
@@ -159,10 +159,10 @@ class ClientParser(BaseParser):
             help='only show issues in openEuler enterprise'
         )
         issues_parser.add_argument(
-            '-create',
-            action='store_true',
-            default=False,
-            help='only show my create issues'
+            '-filter',
+            default=IssueFilter.ALL,
+            choices=[IssueFilter.ALL, IssueFilter.ASSIGNED, IssueFilter.CREATED],
+            help='filte issue, all assigned or created'
         )
         issues_parser.add_argument(
             '-p', '--pretty',
@@ -200,7 +200,7 @@ class ClientParser(BaseParser):
         )
         issues_parser.add_argument(
             '-state',
-            default=IssueState.OPEN,
+            default=IssueState.ALL,
             choices=[IssueState.ALL, IssueState.OPEN, IssueState.CLOSED, IssueState.PROGRESSING, IssueState.REJECTED],
             help='isue state'
         )
@@ -230,7 +230,7 @@ class ClientParser(BaseParser):
         )
         pull_request_parser.add_argument(
             '-state',
-            default=PRState.OPEN,
+            default=PRState.ALL,
             choices=[PRState.ALL, PRState.OPEN, PRState.CLOSED, PRState.MERGED],
             help='PR state'
         )
