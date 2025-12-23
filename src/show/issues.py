@@ -42,6 +42,8 @@ class Issues(BaseShow):
                     continue
             enterprise = item.get('repository', {}).get('enterprise', {})
             if not enterprise:
+                enterprise = item.get('repository', {}).get('namespace', {})
+            if not enterprise:
                 continue
             issue_namespace = enterprise.get('name', '').lower()
             if issue_namespace in [OPENEULER, SRC_OPENEULER]:
@@ -63,9 +65,13 @@ class Issues(BaseShow):
         data = []
         current_page = 1
         user_info = self._get_user_info()
+        if self.api_type == 'gitee':
+            sort = self.sort
+        else:
+            sort = f'{self.sort}_at'
         address = self.api_url + conf.get('api', 'user_issues') + \
                     f'?access_token={self._decode_auth()}&page={current_page}&per_page={self.per_page}' \
-                    f'&state={self.state}&sort={self.sort}&direction={self.direction}'
+                    f'&state={self.state}&sort={sort}&direction={self.direction}'
         if self.filter in [IssueFilter.ALL, IssueFilter.ASSIGNED]:
             data += self._get_issues_by_filter(address, IssueFilter.ASSIGNED)
         if self.filter in [IssueFilter.ALL, IssueFilter.CREATED]:

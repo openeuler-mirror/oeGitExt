@@ -13,6 +13,8 @@ OPENEULER = "openeuler"
 SRC_OPENEULER = "src-openeuler"
 DOT_OEGITEXT = ".oegitext"
 CONF_YAML = "conf.yaml"
+GITEE_CONF_YAML = "gitee-conf.yaml"
+GITCODE_CONF_YAML = "gitcode-conf.yaml"
 OPENEULER_REPOS = "openeuler_repos"
 
 # 颜色设置

@@ -25,9 +25,13 @@ class Fork(ManagerBase):
 
     def _fork(self):
         address = self.api_url + conf.get('api', 'user_repo_forks').format(self.kwargs["user"], self.kwargs["repo"])
-        data = {
-            'access_token': decode_auth(self.auth),
-        }
+        if self.api_type == 'gitee':
+            data = {
+                'access_token': decode_auth(self.auth),
+            }
+        else:
+            data = {}
+            address += f'?access_token={decode_auth(self.auth)}'
         if self.kwargs['name']:
             data['name'] = self.kwargs['name']
         if self.kwargs['path']:

@@ -13,17 +13,18 @@ import base64
 import os
 import re
 
-from src.constants.config import DOT_OEGITEXT, CONF_YAML
 from src.utils.exception import BaseCustomException
 from src.utils.read_conf_yaml import user_conf
 
 
 class Config:
-    def __init__(self, token):
+    def __init__(self, token, api_type):
         self.token = token
+        self.api_type = api_type
 
     def run(self):
-        if not re.match("^[a-f0-9]{32}$", self.token):
+        if self.api_type == 'gitee' and not re.match("^[a-f0-9]{32}$", self.token):
             raise BaseCustomException("bad token format")
         user_conf.conf['token'] = base64.b64encode(self.token.encode()).decode()
+        user_conf.conf['api_type'] = self.api_type
         user_conf.write_yaml()

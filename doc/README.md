@@ -3,7 +3,10 @@
 ## 1. 配置gitee私人令牌
 
 ```
-oegitext config -token ${access_token}
+oegitext config -token ${access_token} -api-type ${API_TYPE}
+参数说明：
+  -token           访问令牌
+  -api-type        使用api类型，gitee或者gitcode
 ```
 
 ## 2. Show project
@@ -265,10 +268,6 @@ oegitext pull -cmd update -user USER -repo REPO -number NUMBER -body BODY [-show
 oegitext pull -cmd close -user USER -repo REPO -number NUMBER [-show]
 ```
 ### 打开PR
-```
-oegitext pull -cmd open -user USER -repo REPO -number NUMBER [-show]
-```
-### 强制review通过
 ```
 oegitext pull -cmd open -user USER -repo REPO -number NUMBER [-show]
 ```

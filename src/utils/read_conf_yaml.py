@@ -12,7 +12,7 @@ import os
 
 import yaml
 
-from src.constants.config import CONF_YAML, DOT_OEGITEXT
+from src.constants.config import CONF_YAML, GITEE_CONF_YAML, GITCODE_CONF_YAML, DOT_OEGITEXT
 from src.utils.exception import BaseCustomException
 
 
@@ -45,8 +45,8 @@ class ReadConfYaml:
             yaml.dump(self.conf, stream=f, allow_unicode=True, sort_keys=False)
 
 
-def get_conf():
-    src_conf = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', CONF_YAML))
+def get_conf(conf_name):
+    src_conf = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', conf_name))
     if os.path.exists(src_conf):
         conf_yaml = ReadConfYaml(src_conf)
     else:
@@ -61,5 +61,18 @@ def get_user_conf():
     return conf_yaml
 
 
-conf = get_conf()
-user_conf = get_user_conf()
+def init_user_conf():
+    user_conf = get_user_conf()
+    try:
+        api_type = user_conf.get('api_type')
+    except Exception:
+        api_type = ''
+    if api_type == 'gitee':
+        conf = get_conf(GITEE_CONF_YAML)
+    else:
+        conf = get_conf(GITCODE_CONF_YAML)
+
+    return user_conf, conf
+
+
+user_conf, conf = init_user_conf()

@@ -1,6 +1,6 @@
 version: 0.0.1
 api_url: https://gitee.com/api/v5
-gitee_url: https://gitee.com
+html_url: https://gitee.com
 headers:
   Content-Type: application/json
   charset: UTF-8

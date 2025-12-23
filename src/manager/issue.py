@@ -42,11 +42,15 @@ class Issue(ManagerBase):
         return requests_api.requests_post(address, data)
 
     def _close_issue(self):
+        if self.api_type == 'gitee':
+            state = 'closed'
+        else:
+            state = 'close'
         data = {
             'access_token': decode_auth(self.auth),
             'repo': self.kwargs['repo'],
             'title': self.kwargs['title'],
-            'state': "closed"
+            'state': state
         }
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
@@ -55,11 +59,15 @@ class Issue(ManagerBase):
         return requests_api.requests_patch(address, data)
 
     def _open_issue(self):
+        if self.api_type == 'gitee':
+            state = 'open'
+        else:
+            state = 'reopen'
         data = {
             'access_token': decode_auth(self.auth),
             'repo': self.kwargs['repo'],
             'title': self.kwargs['title'],
-            'state': "open"
+            'state': state
         }
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
