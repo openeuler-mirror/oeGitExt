@@ -34,11 +34,14 @@ class Pull(ManagerBase):
     def _create_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls').format(self.kwargs["user"], self.kwargs["repo"])
         data = {
-            'access_token': decode_auth(self.auth),
             "title": self.kwargs['title'],
             "head": self.kwargs['head'],
             "base": self.kwargs['base']
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
         return requests_api.requests_post(address, data)
@@ -47,72 +50,96 @@ class Pull(ManagerBase):
         address = self.api_url + conf.get('api', 'user_repo_pulls_number').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             'state': 'closed'
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_patch(address, data)
 
     def _open_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_number').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             'state': 'open'
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_patch(address, data)
 
     def _update_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_number').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "body": self.kwargs['body']
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_patch(address, data)
 
     def _review_pass_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_review').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "force": "true"
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_post(address, data)
 
     def _review_reset_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_assignees').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "reset_all": "true"
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_patch(address, data)
 
     def _test_pass_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_test').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "force": "true"
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_post(address, data)
 
     def _test_reset_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_testers').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "reset_all": "true"
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_patch(address, data)
 
     def _merge_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_merge').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
         data = {
-            'access_token': decode_auth(self.auth),
             "merge_method": "merge"
         }
+        if self.api_type == 'gitee':
+            data['access_token'] = decode_auth(self.auth)
+        else:
+            address += f'?access_token={decode_auth(self.auth)}'
         return requests_api.requests_put(address, data)
 
     def _get_pull_requests(self):

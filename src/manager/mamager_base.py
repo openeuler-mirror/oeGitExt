@@ -17,11 +17,12 @@ class ManagerBase:
     def __init__(self, kwargs):
         self.kwargs = kwargs
         self.api_url = conf.get('api_url')
-        self.gitee_url = conf.get('gitee_url')
+        self.html_url = conf.get('html_url')
         self.headers = conf.get('headers')
         self.times = conf.get('requests', 'retry_times')
         self.per_page = conf.get('requests', 'per_page')
         self.auth = user_conf.get('token')
+        self.api_type = user_conf.get('api_type')
         self.data = None
 
     def _show_result(self, result):

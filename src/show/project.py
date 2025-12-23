@@ -63,7 +63,10 @@ class Project(BaseShow):
                 info = [GREEN, '[public]']
             else:
                 info = [RED, '[private]']
-            info += [repo['human_name'], repo['full_name'], repo['html_url']]
+            url = repo.get('html_url', '')
+            if not url:
+                url = repo.get('homepage', '')
+            info += [repo['human_name'], repo['full_name'], url]
             data_info.append(info)
         if self.pretty:
             self._pretty_print(data_info, title)

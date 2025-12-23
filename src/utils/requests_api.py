@@ -14,7 +14,7 @@ import re
 import requests
 
 from src.utils.exception import BaseCustomException
-from src.utils.read_conf_yaml import conf
+from src.utils.read_conf_yaml import conf, user_conf
 
 
 class RequestsApi:
@@ -22,6 +22,7 @@ class RequestsApi:
         self.headers = conf.get('headers')
         self.times = conf.get('requests', 'retry_times')
         self.timeout = conf.get('requests', 'timeout')
+        self.api_type = user_conf.get('api_type')
 
     def requests_get(self, address):
         result = []
@@ -32,7 +33,10 @@ class RequestsApi:
                 result = json.loads(content)
                 break
         else:
-            add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            if self.api_type == 'gitee':
+                add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            else:
+                add_url = re.sub('access_token=[a-zA-Z0-9\-]{24}', 'access_token=***', address)
             raise BaseCustomException(f'request {add_url} failed: status code: {response.status_code}: reason: {response.reason}')
         return result
 
@@ -46,7 +50,10 @@ class RequestsApi:
                 result = response.content.decode(encoding='UTF-8')
                 break
         else:
-            add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            if self.api_type == 'gitee':
+                add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            else:
+                add_url = re.sub('access_token=[a-zA-Z0-9\-]{24}', 'access_token=***', address)
             raise BaseCustomException(f'post {add_url} failed: status code: {response.status_code}: reason: {response.reason}: text: {response.text}')
         return result
 
@@ -60,7 +67,10 @@ class RequestsApi:
                 result = response.content.decode(encoding='UTF-8')
                 break
         else:
-            add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            if self.api_type == 'gitee':
+                add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            else:
+                add_url = re.sub('access_token=[a-zA-Z0-9\-]{24}', 'access_token=***', address)
             raise BaseCustomException(f'patch {add_url} failed: status code: {response.status_code}: reason: {response.reason}: text: {response.text}')
         return result
 
@@ -74,7 +84,10 @@ class RequestsApi:
                 result = response.content.decode(encoding='UTF-8')
                 break
         else:
-            add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            if self.api_type == 'gitee':
+                add_url = re.sub('access_token=[a-f0-9]{32}', 'access_token=***', address)
+            else:
+                add_url = re.sub('access_token=[a-zA-Z0-9\-]{24}', 'access_token=***', address)
             raise BaseCustomException(f'put {add_url} failed: status code: {response.status_code}: reason: {response.reason}: text: {response.text}')
         return result
 

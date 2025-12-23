@@ -42,7 +42,7 @@ class ClientParser(BaseParser):
 
     @staticmethod
     def _run_config_access_token(args):
-        Config(args.token).run()
+        Config(args.token, args.api_type).run()
 
     @staticmethod
     def _run_show_project(args):
@@ -97,6 +97,12 @@ class ClientParser(BaseParser):
             '-token',
             required=True,
             help='access token'
+        )
+        config_parser.add_argument(
+            '-api-type',
+            choices=['gitee', 'gitcode'],
+            default='gitcode',
+            help='api type'
         )
         config_parser.set_defaults(func=self._run_config_access_token)
 
