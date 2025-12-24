@@ -101,7 +101,7 @@ class ClientParser(BaseParser):
         config_parser.add_argument(
             '-api-type',
             choices=['gitee', 'gitcode'],
-            default='gitcode',
+            default='gitee',
             help='api type'
         )
         config_parser.set_defaults(func=self._run_config_access_token)
