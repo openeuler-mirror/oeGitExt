@@ -168,7 +168,7 @@ class ClientParser(BaseParser):
             '-filter',
             default=IssueFilter.ALL,
             choices=[IssueFilter.ALL, IssueFilter.ASSIGNED, IssueFilter.CREATED],
-            help='filte issue, all assigned or created'
+            help='filter issue, all assigned or created'
         )
         issues_parser.add_argument(
             '-p', '--pretty',
@@ -208,7 +208,7 @@ class ClientParser(BaseParser):
             '-state',
             default=IssueState.ALL,
             choices=[IssueState.ALL, IssueState.OPEN, IssueState.CLOSED, IssueState.PROGRESSING, IssueState.REJECTED],
-            help='isue state'
+            help='issue state'
         )
         issues_parser.set_defaults(func=self._run_show_issues)
 
@@ -232,7 +232,7 @@ class ClientParser(BaseParser):
             '-category',
             default=PRCategory.ALL,
             choices=[PRCategory.ALL, PRCategory.AUTHOR, PRCategory.ASSIGNEE, PRCategory.TESTER],
-            help='PR owner catetory'
+            help='PR owner category'
         )
         pull_request_parser.add_argument(
             '-state',
@@ -396,7 +396,7 @@ class ClientParser(BaseParser):
         )
         pulls_parser.add_argument(
             '-title',
-            help='issue title'
+            help='PR title'
         )
         pulls_parser.add_argument(
             '-head',
