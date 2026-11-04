@@ -95,7 +95,7 @@ class Issues(BaseShow):
                 color = YELLOW
             else:
                 color = GRAY
-            info = [color, f"[{issue['state']}]", issue['number'], issue['title'], issue['user']['login'],
+            info = [color, f"[{issue['state']}]", str(issue['number']), issue['title'], issue['user']['login'],
                     issue['html_url']]
             data_info.append(info)
         if self.pretty:
