@@ -49,9 +49,10 @@ class Issue(ManagerBase):
         data = {
             'access_token': decode_auth(self.auth),
             'repo': self.kwargs['repo'],
-            'title': self.kwargs['title'],
             'state': state
         }
+        if self.kwargs['title']:
+            data['title'] = self.kwargs['title']
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
         address = self.api_url + conf.get('api', 'user_issues_number').format(self.kwargs["user"],
@@ -66,9 +67,10 @@ class Issue(ManagerBase):
         data = {
             'access_token': decode_auth(self.auth),
             'repo': self.kwargs['repo'],
-            'title': self.kwargs['title'],
             'state': state
         }
+        if self.kwargs['title']:
+            data['title'] = self.kwargs['title']
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
         address = self.api_url + conf.get('api', 'user_issues_number').format(self.kwargs["user"], self.kwargs["number"])
@@ -77,9 +79,10 @@ class Issue(ManagerBase):
     def _update_issue(self):
         data = {
             'access_token': decode_auth(self.auth),
-            'repo': self.kwargs['repo'],
-            'title': self.kwargs['title']
+            'repo': self.kwargs['repo']
         }
+        if self.kwargs['title']:
+            data['title'] = self.kwargs['title']
         if self.kwargs['body']:
             data['body'] = self.kwargs['body']
         address = self.api_url + conf.get('api', 'user_issues_number').format(self.kwargs["user"], self.kwargs["number"])
