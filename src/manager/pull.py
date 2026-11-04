@@ -29,7 +29,7 @@ class Pull(ManagerBase):
             result = getattr(self, cmd_str)()
             self._show_result(result)
         else:
-            raise BaseCustomException(f'bad issue command: {self.kwargs["cmd"]}')
+            raise BaseCustomException(f'bad pull command: {self.kwargs["cmd"]}')
 
     def _create_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls').format(self.kwargs["user"], self.kwargs["repo"])
