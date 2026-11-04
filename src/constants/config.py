@@ -59,7 +59,7 @@ class Sort:
     FULL_NAME = 'full_name'
     CREATED = 'created'
     UPDATED = 'updated'
-    PUSHD = 'pushd'
+    PUSHED = 'pushed'
     DESC = 'desc'
     ASC = 'asc'
 
