@@ -9,7 +9,7 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 
-from src.manager.mamager_base import ManagerBase
+from src.manager.manager_base import ManagerBase
 from src.utils.common import decode_auth
 from src.utils.read_conf_yaml import conf
 from src.utils.requests_api import requests_api
