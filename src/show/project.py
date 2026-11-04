@@ -32,7 +32,7 @@ class Project(BaseShow):
             address = self.api_url + conf.get('api', 'user_repos') + \
             f'?access_token={self._decode_auth()}&page={current_page}&per_page={self.per_page}&sort={self.sort}'
             if self.direction:
-                address += f'&{self.direction}'
+                address += f'&direction={self.direction}'
             page = self._requests_data(address)
             data += page
             if len(page) < self.per_page:
