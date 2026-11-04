@@ -54,7 +54,7 @@ class Issues(BaseShow):
         data = []
         current_page = 1
         while True:
-            page = self._requests_data(address + f'&filter={filter}')
+            page = self._requests_data(address + f'&page={current_page}&filter={filter}')
             data += page
             if len(page) < self.per_page:
                 break
@@ -63,14 +63,14 @@ class Issues(BaseShow):
 
     def _get_issues(self):
         data = []
-        current_page = 1
         user_info = self._get_user_info()
         if self.api_type == 'gitee':
             sort = self.sort
         else:
             sort = f'{self.sort}_at'
+        # page 不在此处拼接，由 _get_issues_by_filter 逐页追加
         address = self.api_url + conf.get('api', 'user_issues') + \
-                    f'?access_token={self._decode_auth()}&page={current_page}&per_page={self.per_page}' \
+                    f'?access_token={self._decode_auth()}&per_page={self.per_page}' \
                     f'&state={self.state}&sort={sort}&direction={self.direction}'
         if self.filter in [IssueFilter.ALL, IssueFilter.ASSIGNED]:
             data += self._get_issues_by_filter(address, IssueFilter.ASSIGNED)
