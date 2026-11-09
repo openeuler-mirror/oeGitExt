@@ -73,9 +73,9 @@ class Pull(ManagerBase):
     def _update_pull_request(self):
         address = self.api_url + conf.get('api', 'user_repo_pulls_number').format(self.kwargs["user"],
                     self.kwargs["repo"], self.kwargs["number"])
-        data = {
-            "body": self.kwargs['body']
-        }
+        data = {}
+        if self.kwargs['body']:
+            data['body'] = self.kwargs['body']
         if self.api_type == 'gitee':
             data['access_token'] = decode_auth(self.auth)
         else:
