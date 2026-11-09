@@ -17,9 +17,9 @@ oegitext show proj [-h] [-create] [-p] [-j] [-s {full_name,created,updated,pushd
   -create           仅显示我创建的工程
   -p, --pretty      以pretty格式显示结果
   -j, --json        以json格式显示结果
-  -s, --sort        排序依据: 创建时间(created)，更新时间(updated)
-  -d, --direction   排序方式，升序或者降序
-  -c， --columns    仅显示指定列
+  -s, --sort        排序依据: 工程名(full_name，默认)，创建时间(created)，更新时间(updated)，pushd
+  -d, --direction   排序方式，升序(asc)或者降序(desc)，默认不指定
+  -c, --columns     仅显示指定列
 ```
 ### 显示我的项目
 ```
@@ -51,18 +51,18 @@ oegitext show proj -create --columns state,url --pretty
 
 ## 3. Show issues
 ```
-oegitext show issue [-h] [-oe] [-create] [-p] [-j] [-s {created,updated}] [-d {desc,asc}] [-c COLUMNS]
+oegitext show issue [-h] [-oe] [-filter {all,assigned,created}] [-p] [-j] [-s {created,updated}] [-d {desc,asc}] [-c COLUMNS]
                     [-state {all,open,closed,progressing,rejected}]
 参数说明：
   -h, --help        显示帮助信息
   -oe               仅显示openEuler企业仓issue
-  -create           仅显示我创建的issue
+  -filter           过滤issue: all(默认，与我相关的)，assigned(指派给我的)，created(我创建的)
   -p, --pretty      以pretty格式显示结果
   -j, --json        以json格式显示结果
   -s, --sort        排序依据: 创建时间(created)，更新时间(updated)
   -d, --direction   排序方式，升序或者降序
   -c, --columns     仅显示指定列
-  -stage            根据状态过滤issue，all,open,closed,progressing,rejected，默认为open
+  -state            根据状态过滤issue，all,open,closed,progressing,rejected，默认为all
 ```
 ### 显示我负责的issues
 ```
@@ -80,16 +80,16 @@ oegitext show issue --columns state,url --pretty
 
 ### 显示我创建的issues
 ```
-oegitext show issue -create
+oegitext show issue -filter created
 # 以pretty格式显示
-oegitext show issue -create -p
-oegitext show issue -create --pretty
+oegitext show issue -filter created -p
+oegitext show issue -filter created --pretty
 # 仅显示state和url列
-oegitext show issue -create -c state,url
-oegitext show issue -create --columns state,url
+oegitext show issue -filter created -c state,url
+oegitext show issue -filter created --columns state,url
 # 以pretty格式显示
-oegitext show issue -create -c state,url -p
-oegitext show issue -create --columns state,url --pretty
+oegitext show issue -filter created -c state,url -p
+oegitext show issue -filter created --columns state,url --pretty
 ```
 
 ## 4. Show pull request
@@ -98,10 +98,10 @@ oegitext show pr [-h] [-oe] [-name REPO_NAME] [-category {all,author,assignee,te
                  [-state {all,open,closed,merged}] [-p] [-j] [-c COLUMNS]
 参数说明：
   -h, --help        显示帮助信息
-  -oe               仅显示openEuler企业仓issue
+  -oe               仅显示openEuler企业仓PR
   -name             pr所属name，未指定显示用户所有pr
-  -category         根据用户角色过滤PR，all,open,closed,merged，默认为all
-  -stage            根据状态过滤PR，all,author,assignee,tester，默认为open
+  -category         根据用户角色过滤PR，all,author,assignee,tester，默认为all
+  -state            根据状态过滤PR，all,open,closed,merged，默认为all
   -p, --pretty      以pretty格式显示结果
   -j, --json        以json格式显示结果
   -c, --columns     仅显示指定列
@@ -122,7 +122,7 @@ oegitext show pr -name src-openeuler/vscode --columns state,url --pretty
 
 ### 仅显示仓库中我创建的PR
 ```
-oegitext show pr -name src-openeuler/vscode -category create
+oegitext show pr -name src-openeuler/vscode -category author
 ```
 
 ### 显示我创建的所有PR
@@ -210,23 +210,23 @@ oegitext issue [-h] -cmd {create,update,close,open,get} [-user USER] [-repo REPO
 
 ### 获取仓库issue
 ```
-issue -cmd get -user USER -repo REPO -number NUMBER [-show]
+oegitext issue -cmd get -user USER -repo REPO -number NUMBER [-show]
 ```
 ### 创建issue
 ```
-issue -cmd create -user USER -repo REPO -title TITLE [-body BODY] [-show]
+oegitext issue -cmd create -user USER -repo REPO -title TITLE [-body BODY] [-show]
 ```
 ### 更新issue
 ```
-issue -cmd update -user USER -repo REPO -title TITLE -number NUMBER [-body BODY] [-show]
+oegitext issue -cmd update -user USER -repo REPO -title TITLE -number NUMBER [-body BODY] [-show]
 ```
 ### 关闭issue
 ```
-issue -cmd close -user USER -repo REPO -number NUMBER [-show]
+oegitext issue -cmd close -user USER -repo REPO -number NUMBER [-show]
 ```
 ### 打开issue
 ```
-issue -cmd open -user USER -repo REPO -number NUMBER [-show]
+oegitext issue -cmd open -user USER -repo REPO -number NUMBER [-show]
 ```
 
 ## 8. 处理PR
@@ -240,10 +240,10 @@ oegitext pull [-h] -cmd {create,update,close,open,review,test,merge,get} [-user 
   -repo REPO      仓库路径(path)
   -title TITLE    title
   -head HEAD      PR提交的源分支。格式：branch (master) 或者：path_with_namespace:branch (oschina/gitee:master)
-  -base BASE      RP提交目标分支的名称
+  -base BASE      PR提交目标分支的名称
   -number NUMBER  number
-  -body           RP内容
-  -state STATE    state
+  -body BODY      PR内容
+  -state STATE    state，仅review/test命令使用，取值为pass或reset
   -show           显示requests结果
 
 ```
