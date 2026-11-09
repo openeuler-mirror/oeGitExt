@@ -11,7 +11,7 @@ oegitext config -token ${access_token} -api-type ${API_TYPE}
 
 ## 2. Show project
 ```
-oegitext show proj [-h] [-create] [-p] [-j] [-s {full_name,created,updated,pushd}] [-d {,desc,asc}] [-c COLUMNS]
+oegitext show proj [-h] [-create] [-p] [-j] [-s {full_name,created,updated,pushed}] [-d {,desc,asc}] [-c COLUMNS]
 参数说明：
   -h, --help        显示帮助信息
   -create           仅显示我创建的工程

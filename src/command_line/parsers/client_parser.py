@@ -135,7 +135,7 @@ class ClientParser(BaseParser):
             '-s', '--sort',
             dest='sort',
             default=Sort.FULL_NAME,
-            choices=[Sort.FULL_NAME, Sort.CREATED, Sort.UPDATED, Sort.PUSHD],
+            choices=[Sort.FULL_NAME, Sort.CREATED, Sort.UPDATED, Sort.PUSHED],
             help='sort rules'
         )
         project_parser.add_argument(
