@@ -12,7 +12,7 @@
 import json
 
 from src.constants.config import RESET, PullsCommand
-from src.manager.mamager_base import ManagerBase
+from src.manager.manager_base import ManagerBase
 from src.utils.common import decode_auth
 from src.utils.exception import BaseCustomException
 from src.utils.read_conf_yaml import conf
